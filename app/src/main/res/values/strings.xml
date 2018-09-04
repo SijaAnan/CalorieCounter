@@ -7,4 +7,10 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="start_welcome_txt">Welcome to SijaAnan CalorieCounter App</string>
+    <string name="start_signup_btn">Create an account</string>
+    <string name="start_signin_btn">Sign in</string>
+    <string name="reg_title_txt">Create a new account</string>
+    <string name="reg_email_hint">Enter your e-mail ...</string>
+    <string name="reg_pass_hint">Please enter a password ...</string>
+    <string name="reg_signup_btn">Create account</string>
 </resources>
