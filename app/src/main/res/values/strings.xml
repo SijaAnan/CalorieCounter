@@ -13,4 +13,9 @@
     <string name="reg_email_hint">Enter your e-mail ...</string>
     <string name="reg_pass_hint">Please enter a password ...</string>
     <string name="reg_signup_btn">Create account</string>
+    <string name="main_action_logout">Log out</string>
+    <string name="login_title_txt">Sign in to your account</string>
+    <string name="login_email_hint">Enter Your Email ...</string>
+    <string name="login_password_hint">Enter Your Password</string>
+    <string name="login_signin_btn">SIGN IN</string>
 </resources>

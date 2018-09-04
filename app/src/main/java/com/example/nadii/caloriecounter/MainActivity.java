@@ -34,14 +34,6 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -62,10 +54,16 @@ public class MainActivity extends AppCompatActivity
 
         if(currentUser == null){
 
-            Intent startIntent = new Intent(MainActivity.this , StartActivity.class);
-            startActivity(startIntent);
-            finish();
+            send2start_act();
         }
+    }
+
+    //function that sends us to the start activity.
+    private void send2start_act() {
+
+        Intent startIntent = new Intent(MainActivity.this , StartActivity.class);
+        startActivity(startIntent);
+        finish();
     }
 
     @Override
@@ -93,7 +91,13 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+
+        if(id == R.id.main_action_logout){ //checking if the logout btn in the menu has been pressed.
+
+            FirebaseAuth.getInstance().signOut(); //if pressed , log out.
+            send2start_act();
+        }
+        else if (id == R.id.action_settings) {
             return true;
         }
 
@@ -113,10 +117,6 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
 
         }
 
