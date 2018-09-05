@@ -15,18 +15,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class RegisterActivity extends AppCompatActivity {
 
     //create firebase instase.
     private FirebaseAuth mAuth;
 
-    //ProgressDialog
-    private ProgressDialog mRegProgress;
-
-    private EditText mEmail;
-    private EditText mPassword;
-    private Button mCreateBtn;
+    private Button mVerifyBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,58 +33,46 @@ public class RegisterActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         //Toolbar set
-        getSupportActionBar().setTitle("Create an Account");
+        getSupportActionBar().setTitle("Email Verification");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //progress dialog
-        mRegProgress = new ProgressDialog(this);
+        //design fields.
+        mVerifyBtn = (Button) findViewById(R.id.reg_verify_btn);
 
-        //design fiedls
-        mEmail = (EditText) findViewById(R.id.reg_email_txt);
-        mPassword = (EditText) findViewById(R.id.reg_pass_txt);
-        mCreateBtn = (Button) findViewById(R.id.reg_signup_btn);
-
-        mCreateBtn.setOnClickListener(new View.OnClickListener() {
+        mVerifyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String email = mEmail.getText().toString();
-                String password = mPassword.getText().toString();
-
-                if(!TextUtils.isEmpty(email) || !TextUtils.isEmpty(password)) {
-
-                    mRegProgress.setTitle("Registering User");
-                    mRegProgress.setMessage("Please wait while we create your account");
-                    mRegProgress.setCanceledOnTouchOutside(false);
-                    mRegProgress.show();
-
-                    register_user(email, password);
-
+                send_verify_email();
                 }
-            }
+
         });
+
+
     }
 
-    private void register_user(String email, String password) {
 
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+    private void send_verify_email() {
+
+        mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
+            public void onComplete(@NonNull Task<Void> task) {
 
                 if(task.isSuccessful()){
+                    Toast.makeText(RegisterActivity.this , "Verification Email Sent.", Toast.LENGTH_LONG).show();
 
-                    mRegProgress.dismiss();
-
-                    Intent main_intent = new Intent(RegisterActivity.this , MainActivity.class);
-                    startActivity(main_intent);
+                    //after the mail is sent , logout the user and finish the activity
+                    FirebaseAuth.getInstance().signOut();
+                    startActivity(new Intent(RegisterActivity.this , StartActivity.class));
                     finish();
-
-                }else{
-
-                    mRegProgress.hide();
-                    Toast.makeText(RegisterActivity.this , "Cannot Sign up. ERROR", Toast.LENGTH_LONG).show();
                 }
+                else{
 
+                    //email not sent. display message , and restart the activity.
+                    Toast.makeText(RegisterActivity.this , "ERROR in sending verification email.", Toast.LENGTH_LONG).show();
+                    finish();
+                    startActivity(getIntent());
+                }
             }
         });
     }
