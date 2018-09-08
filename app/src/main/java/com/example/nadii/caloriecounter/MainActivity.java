@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -43,6 +45,13 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        //set default fragment(HOME)
+        android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.flMain , new HomeFragment());
+        ft.commit();
+
+        navigationView.setCheckedItem(R.id.main_nav_home);
     }
 
 
@@ -111,12 +120,29 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.main_nav_home) {
-            // Handle the camera action
+            // Handle the home action
+            //Fragment HomeFrag = new HomeFragment();
+            android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.flMain , new HomeFragment());
+            ft.commit();
+
         } else if (id == R.id.main_nav_profile) {
+
+            android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.flMain , new ProfileFragment());
+            ft.commit();
 
         } else if (id == R.id.main_nav_categories) {
 
+            android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.flMain , new CategoriesFragment());
+            ft.commit();
+
         } else if (id == R.id.main_nav_food) {
+
+            android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.flMain , new FoodFragment());
+            ft.commit();
 
         } else if (id == R.id.main_nav_extra) {
 
