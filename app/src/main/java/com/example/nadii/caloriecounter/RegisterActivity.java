@@ -16,13 +16,20 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity {
 
     //create firebase instase.
     private FirebaseAuth mAuth;
 
+    private DatabaseReference mDataBase;
+
     private Button mVerifyBtn;
+    private EditText mName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +45,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         //design fields.
         mVerifyBtn = (Button) findViewById(R.id.reg_verify_btn);
+        mName = (EditText) findViewById(R.id.reg_name_edittxt);
 
         mVerifyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,7 +67,10 @@ public class RegisterActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
 
                 if(task.isSuccessful()){
-                    Toast.makeText(RegisterActivity.this , "Verification Email Sent.", Toast.LENGTH_LONG).show();
+
+                    set_profile();
+
+                    Toast.makeText(RegisterActivity.this , "Profile Set ,Verification Email Sent.", Toast.LENGTH_LONG).show();
 
                     //after the mail is sent , logout the user and finish the activity
                     FirebaseAuth.getInstance().signOut();
@@ -75,5 +86,49 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void set_profile() {
+
+        FirebaseUser current_user = FirebaseAuth.getInstance().getCurrentUser();
+        String current_uid = current_user.getUid();
+
+        if(current_user != null) {
+
+            //String current_uid = current_user.getUid();
+        }
+
+        //reference to the realtime database. pointing to our root.
+        mDataBase = FirebaseDatabase.getInstance().getReference();
+
+        mDataBase = mDataBase.child("users").child(current_uid);
+
+        HashMap<String , String> userMap = new HashMap<>();
+
+        userMap.put("name", mName.getText().toString());
+        userMap.put("weight" , "0");
+        userMap.put("height" , "0");
+        userMap.put("gender" , "unknown");
+        userMap.put("birth date" , "dd/mm/yyyy");
+
+        mDataBase.setValue(userMap);
+
+        mDataBase = mDataBase.child("food");
+
+        HashMap<String , String> userBreakfast = new HashMap<>();
+        userBreakfast.put("egg" , "63");
+        mDataBase.child("breakfast").setValue(userBreakfast);
+
+        HashMap<String , String> userLunch = new HashMap<>();
+        userLunch.put("burger" , "540");
+        mDataBase.child("lunch").setValue(userLunch);
+
+        HashMap<String , String> userDinner = new HashMap<>();
+        userDinner.put("spaghetti" , "340");
+        mDataBase.child("dinner").setValue(userDinner);
+
+        HashMap<String , String> userSnacks = new HashMap<>();
+        userSnacks.put("apple" , "40");
+        mDataBase.child("snacks").setValue(userSnacks);
     }
 }
