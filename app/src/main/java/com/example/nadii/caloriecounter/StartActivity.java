@@ -124,16 +124,16 @@ public class StartActivity extends AppCompatActivity {
                         //email is not verified , display message for the user , and log him out.
                         Toast.makeText(StartActivity.this , "Please verify your email before logging in again. ", Toast.LENGTH_LONG).show();
 
-                        Intent reg_intent = new Intent(StartActivity.this , RegisterActivity.class);
-                        startActivity(reg_intent);
-                        finish();
+                        //Intent reg_intent = new Intent(StartActivity.this , RegisterActivity.class);
+                        //startActivity(reg_intent);
+                        //finish();
 
                     }
                 }
                 else{
 
                     mLoginProgress.hide();
-                    Toast.makeText(StartActivity.this , "Cannot Sign in. ERROR", Toast.LENGTH_LONG).show();
+                    Toast.makeText(StartActivity.this , "Cannot Sign in. Email or password may be incorrect.", Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -150,21 +150,51 @@ public class StartActivity extends AppCompatActivity {
 
                     mRegProgress.dismiss();
 
-                    Toast.makeText(StartActivity.this , "Please verify your email before logging in.", Toast.LENGTH_LONG).show();
+                    send_verify_email();
+
+                    //Toast.makeText(StartActivity.this , "Please verify your email before logging in.", Toast.LENGTH_LONG).show();
 
                     Intent reg_intent = new Intent(StartActivity.this , RegisterActivity.class);
                     startActivity(reg_intent);
-                    finish();
+                    //finish(); fixed the bug that sijaan wrote in readme.
 
                 }else{
 
                     mRegProgress.hide();
-                    Toast.makeText(StartActivity.this , "Cannot Sign up. ERROR", Toast.LENGTH_LONG).show();
+                    Toast.makeText(StartActivity.this , "Cannot Sign up. Email may be registered already.", Toast.LENGTH_LONG).show();
                 }
 
             }
         });
 
+    }
+
+    private void send_verify_email() {
+
+        mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+                if(task.isSuccessful()){
+
+                    //set_profile();
+
+                    Toast.makeText(StartActivity.this , "Verification Email Sent. Please verify your email before signing in", Toast.LENGTH_LONG).show();
+
+                    //after the mail is sent , logout the user and finish the activity
+                    FirebaseAuth.getInstance().signOut();
+                    //startActivity(new Intent(StartActivity.this , StartActivity.class));
+                    //finish();
+                }
+                else{
+
+                    //email not sent. display message , and restart the activity.
+                    Toast.makeText(StartActivity.this , "ERROR in sending verification email.", Toast.LENGTH_LONG).show();
+                    //finish();
+                    //startActivity(getIntent());
+                }
+            }
+        });
     }
 
 }

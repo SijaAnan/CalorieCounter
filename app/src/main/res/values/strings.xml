@@ -16,7 +16,7 @@
     <string name="main_action_logout">Log out</string>
     <string name="start_email_txt">Enter Your Email ...</string>
     <string name="start_password_txt">Enter Your Password ...</string>
-    <string name="reg_name_txtview">Your Name (Full Name) :</string>
+    <string name="reg_name_txtview">Name:</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="home_blank_fragment">Hello HOME fragment</string>
@@ -29,4 +29,37 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="food_blank_fragment">Hello FOOD fragment</string>
+
+    <string name="reg_birth_txt">Date of birth</string>
+    <string name="reg_gender_txt">Gender</string>
+    <string name="reg_measurement_txt">Measurement</string>
+    <string name="reg_height_txt">Height</string>
+    <string name="reg_weight_txt">Weight</string>
+    <string name="reg_cm_txt">cm</string>
+    <string name="reg_kg_txt">kg</string>
+    <string name="reg_metric_txt">Metric</string>
+    <string name="reg_male_radio">Male</string>
+    <string name="reg_female_radio">Female</string>
+    <string name="profilefragment_title_txt">Name:</string>
+    <string name="profilefragment_name_txtview">Name:</string>
+    <string name="profilefragment_birth_txt">Birth Date:</string>
+    <string name="profilefragment_gender_txt">Gender:</string>
+    <string name="profilefragment_BMI_txt">BMI:</string>
+
+
+    <string-array name="months" >
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+
 </resources>
