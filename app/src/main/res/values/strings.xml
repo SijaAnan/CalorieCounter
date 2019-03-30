@@ -45,6 +45,7 @@
     <string name="profilefragment_birth_txt">Birth Date:</string>
     <string name="profilefragment_gender_txt">Gender:</string>
     <string name="profilefragment_BMI_txt">BMI:</string>
+    <string name="profilefrag_edit_btn">Edit</string>
 
 
     <string-array name="months" >

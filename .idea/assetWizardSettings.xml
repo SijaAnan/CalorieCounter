@@ -23,7 +23,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="scalingPercent" value="51" />
+                                                <entry key="scalingPercent" value="65" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -34,8 +34,8 @@
                                   <option name="values">
                                     <map>
                                       <entry key="backgroundAssetType" value="COLOR" />
-                                      <entry key="backgroundColor" value="70a631" />
-                                      <entry key="foregroundImage" value="D:\Desktop\Anan's Proj\energy-food-calorie-nutrition-nutrient-vitamin-512.png" />
+                                      <entry key="backgroundColor" value="c2d6a3" />
+                                      <entry key="foregroundImage" value="D:\Desktop\Anan's Proj\Artboard 3.png" />
                                     </map>
                                   </option>
                                 </PersistentState>

@@ -48,8 +48,9 @@ public class MainActivity extends AppCompatActivity
 
         //set default fragment(HOME)
         android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.flMain , new HomeFragment());
+        ft.replace(R.id.flMain, new HomeFragment());
         ft.commit();
+
 
         navigationView.setCheckedItem(R.id.main_nav_home);
     }

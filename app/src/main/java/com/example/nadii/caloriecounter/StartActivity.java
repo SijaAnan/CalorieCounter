@@ -155,6 +155,7 @@ public class StartActivity extends AppCompatActivity {
                     //Toast.makeText(StartActivity.this , "Please verify your email before logging in.", Toast.LENGTH_LONG).show();
 
                     Intent reg_intent = new Intent(StartActivity.this , RegisterActivity.class);
+                    reg_intent.putExtra("flag", "FirstTime");
                     startActivity(reg_intent);
                     //finish(); fixed the bug that sijaan wrote in readme.
 
@@ -182,7 +183,7 @@ public class StartActivity extends AppCompatActivity {
                     Toast.makeText(StartActivity.this , "Verification Email Sent. Please verify your email before signing in", Toast.LENGTH_LONG).show();
 
                     //after the mail is sent , logout the user and finish the activity
-                    FirebaseAuth.getInstance().signOut();
+                    //FirebaseAuth.getInstance().signOut();
                     //startActivity(new Intent(StartActivity.this , StartActivity.class));
                     //finish();
                 }

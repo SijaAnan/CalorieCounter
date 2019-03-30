@@ -111,8 +111,24 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 //send_verify_email();
-                set_profile();
+                Intent intent = getIntent();
+                String checkFlag= intent.getStringExtra("flag");
+
+                if(checkFlag.equals("FirstTime")){
+                    //if we came here from start activity - registration process.
+                    set_profile();
+                    FirebaseAuth.getInstance().signOut();
+                    finish();
                 }
+                else{
+                // It MainActivity - editing profile.
+                    set_profile();
+                    Intent main_intent = new Intent(RegisterActivity.this , MainActivity.class);
+                    startActivity(main_intent);
+                    finish();
+
+                }
+            }
 
         });
 
@@ -155,6 +171,7 @@ public class RegisterActivity extends AppCompatActivity {
     }*/
 
     private void set_profile() {
+
 
         FirebaseUser current_user = FirebaseAuth.getInstance().getCurrentUser();
         String current_uid = current_user.getUid();
@@ -201,6 +218,8 @@ public class RegisterActivity extends AppCompatActivity {
         HashMap<String , String> userSnacks = new HashMap<>();
         userSnacks.put("apple" , "40");
         mDataBase.child("snacks").setValue(userSnacks);
+
+
     }
 
 

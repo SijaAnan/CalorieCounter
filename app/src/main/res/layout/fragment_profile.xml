@@ -10,5 +10,16 @@
     <ListView
         android:id="@+id/profilefragment_userlist"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+    </ListView>
+
+    <Button
+        android:id="@+id/profilefrag_edit_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/profilefrag_edit_btn"
+        android:layout_gravity="bottom|center"
+         />
 </FrameLayout>

@@ -1,8 +1,10 @@
 package com.example.nadii.caloriecounter;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +37,7 @@ public class ProfileFragment extends Fragment {
     private FirebaseAuth mAuth;
 
     private DatabaseReference mDataBase;
+    private DatabaseReference mCurrUserRef;
 
     private ListView mUserList;
 
@@ -60,18 +63,18 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         ((MainActivity)getActivity()).setActionBarTitle("Profile");
 
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        final View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         //initialize the FirebaseAuth instance.
         mAuth = FirebaseAuth.getInstance();
 
         //design fields.
         mUserList = (ListView) view.findViewById(R.id.profilefragment_userlist);
+        mEditBtn = (Button) view.findViewById(R.id.profilefrag_edit_btn);
 
         //ArrayAdapter<String > arrayAdapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,mUserData);
         //mUserList.setAdapter(arrayAdapter);
 
-        mEditBtn = (Button) view.findViewById(R.id.reg_verify_btn);
      /*   mName = (EditText) view.findViewById(R.id.profilefragment_name_value);
         mHeight = (EditText) view.findViewById(R.id.profilefragment_height_value_txt);
         mWeight = (EditText) view.findViewById(R.id.profilefragment_weight_value_txt);
@@ -85,15 +88,19 @@ public class ProfileFragment extends Fragment {
         //mUserList.setAdapter(arrayAdapter);
 
         get_profile();
-/*
+
         mEditBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                Intent reg_intent = new Intent(getActivity() , RegisterActivity.class);
+                reg_intent.putExtra("flag", "Edit");
+                startActivity(reg_intent);
+                getActivity().finish();
 
             }
 
-        });*/
+        });
 
         // Inflate the layout for this fragment
         return view;
@@ -102,115 +109,56 @@ public class ProfileFragment extends Fragment {
     private void get_profile() {
 
         FirebaseUser current_user = FirebaseAuth.getInstance().getCurrentUser();
-        String current_uid = current_user.getUid();
+        //final String current_uid = current_user.getUid();
 
         arrayAdapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1,mUserData);
 
+        mUserData.clear();
 
         if(current_user != null) {
 
             //String current_uid = current_user.getUid();
+            String current_uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+
+            //reference to the realtime database. pointing to our root.
+            mDataBase = FirebaseDatabase.getInstance().getReference();
+
+            //mDataBase = mDataBase.child("users");//.child(current_uid);
+            mCurrUserRef = mDataBase.child("users").child(current_uid);
+
+            ValueEventListener eventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    String name = dataSnapshot.child("name").getValue(String.class);
+                    String birthdate = dataSnapshot.child("birth date").getValue(String.class);
+                    String gender = dataSnapshot.child("gender").getValue(String.class);
+                    String height = dataSnapshot.child("height").getValue(String.class);
+                    String weight = dataSnapshot.child("weight").getValue(String.class);
+
+                    mUserData.add("name: " + name);
+                    mUserData.add("birth date: " + birthdate);
+                    mUserData.add("gender: " + gender);
+                    mUserData.add("height: " + height);
+                    mUserData.add("weight: " + weight);
+                    mUserData.add("BMI : ");
+
+                    arrayAdapter.notifyDataSetChanged();
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            };
+            mCurrUserRef.addListenerForSingleValueEvent(eventListener);
+
+            mUserList.setAdapter(arrayAdapter);
         }
 
-        //reference to the realtime database. pointing to our root.
-        mDataBase = FirebaseDatabase.getInstance().getReference();
 
-        mDataBase = mDataBase.child("users").child(current_uid);
-
-        mDataBase.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                //problem here!!!
-                Toast.makeText(getActivity() , "CanFUCKKSKSKSKSistered already.", Toast.LENGTH_LONG).show();
-                String value = dataSnapshot.child("name").getValue(String.class);
-                mUserData.add(value);
-                arrayAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        mUserList.setAdapter(arrayAdapter);
-        /*
-        mDataBase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                Toast.makeText(getActivity() , "CanFUCKKSKSKSKSistered already.", Toast.LENGTH_LONG).show();
-                String value = dataSnapshot.getValue(String.class);
-                mUserData.add(value);
-                arrayAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-*/
-/*
-        mDataBase.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-                Toast.makeText(getActivity() , "CanFUCKKSKSKSKSistered already.", Toast.LENGTH_LONG).show();
-                String value = dataSnapshot.getValue(String.class);
-                mUserData.add(value);
-                arrayAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                String value = dataSnapshot.getValue(String.class);
-                mUserData.add(value);
-                arrayAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });*/
-
-
-
-
-        //userMap.put("birth date" , "dd/mm/yyyy");
-
-       // mDataBase.setValue(userMap);
-/*
-        mDataBase = mDataBase.child("food");
-
-        HashMap<String , String> userBreakfast = new HashMap<>();
-        userBreakfast.put("egg" , "63");
-        mDataBase.child("breakfast").setValue(userBreakfast);
-
-        HashMap<String , String> userLunch = new HashMap<>();
-        userLunch.put("burger" , "540");
-        mDataBase.child("lunch").setValue(userLunch);
-
-        HashMap<String , String> userDinner = new HashMap<>();
-        userDinner.put("spaghetti" , "340");
-        mDataBase.child("dinner").setValue(userDinner);
-
-        HashMap<String , String> userSnacks = new HashMap<>();
-        userSnacks.put("apple" , "40");
-        mDataBase.child("snacks").setValue(userSnacks);*/
     }
 
 }
