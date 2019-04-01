@@ -115,6 +115,11 @@ public class MainActivity extends AppCompatActivity
         else if (id == R.id.action_settings) {
             return true;
         }
+        else if(id == R.id.action_add_food){
+            android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.flMain , new FoodFragment());
+            ft.commit();
+        }
 
         return super.onOptionsItemSelected(item);
     }

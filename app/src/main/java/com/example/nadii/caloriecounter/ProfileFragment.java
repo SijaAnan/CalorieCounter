@@ -142,7 +142,7 @@ public class ProfileFragment extends Fragment {
                     mUserData.add("gender: " + gender);
                     mUserData.add("height: " + height);
                     mUserData.add("weight: " + weight);
-                    mUserData.add("BMI : ");
+                    mUserData.add("BMI : " + calcualteBMI(height,weight));
 
                     arrayAdapter.notifyDataSetChanged();
 
@@ -159,6 +159,57 @@ public class ProfileFragment extends Fragment {
         }
 
 
+    }
+
+    double calcualteBMI(String height_str , String weight_str) {
+
+        double height = Double.parseDouble(height_str);
+        double weight = Double.parseDouble(weight_str);
+
+        height = height * 1/100;
+        height = height*height;
+
+
+        // Calculate result
+        double result = Math.round(weight/height);
+
+
+
+        // If or else for values
+        /*
+        if(result < 18.5){
+            TextViewResult.setText("Your BMI is " + result + "\nYou are categorized as underweight.");
+        }
+        else{
+            if(result < 24.9){
+                TextViewResult.setText("Your BMI is " + result + "\nYou are categorized as normal weight.");
+            }
+            else {
+                if (result < 29.9) {
+                    TextViewResult.setText("Your BMI is " + result + "\nYou are categorized as overweight.");
+                }
+                else{
+                    if(result > 30 && result < 34.9){
+                        TextViewResult.setText("Your BMI is " + result + "\nYou are categorized as obese class I (Moderately obese).");
+                    }
+                    else {
+                        if(result < 39.9){
+                            TextViewResult.setText("Your BMI is " + result + "\nYou are categorized as obese class II (Severely obese).");
+                        }
+                        else{
+                            if(result < 40){
+                                TextViewResult.setText("Your BMI is " + result + "\nYou are categorized as obese class III (Very severely obese).");
+                            }
+                            else{
+                                TextViewResult.setText("");
+                            }
+                        }
+                    }
+                }
+            }
+        }*/
+
+        return result;
     }
 
 }
