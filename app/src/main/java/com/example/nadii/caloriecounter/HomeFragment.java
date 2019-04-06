@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -39,6 +40,8 @@ public class HomeFragment extends Fragment {
     private ArrayList<String> mUserFood = new ArrayList<>();
     private ArrayAdapter<String> home_arrayAdapter;
 
+    private TextView mSumCalorie;
+    private double calorie_sum=0;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -57,6 +60,7 @@ public class HomeFragment extends Fragment {
 
         //design fields
         mFoodList = (ListView) home_view.findViewById(R.id.homefragment_list);
+        mSumCalorie = (TextView) home_view.findViewById(R.id.homefrag_txt_view);
 
         //for toolbar.
         //setHasOptionsMenu(true);
@@ -99,6 +103,7 @@ public class HomeFragment extends Fragment {
                         String name = ds.getKey().toString();
                         String value = ds.getValue(String.class);
 
+                        calorie_sum = calorie_sum + Double.parseDouble(value);
 
                         mUserFood.add("    " + name + "  " + value);
 
@@ -125,6 +130,7 @@ public class HomeFragment extends Fragment {
                         String name = ds.getKey().toString();
                         String value = ds.getValue(String.class);
 
+                        calorie_sum = calorie_sum + Double.parseDouble(value);
 
                         mUserFood.add("    " + name + "  " + value);
 
@@ -151,6 +157,7 @@ public class HomeFragment extends Fragment {
                         String name = ds.getKey().toString();
                         String value = ds.getValue(String.class);
 
+                        calorie_sum = calorie_sum + Double.parseDouble(value);
 
                         mUserFood.add("    " + name + "  " + value);
 
@@ -177,6 +184,7 @@ public class HomeFragment extends Fragment {
                         String name = ds.getKey().toString();
                         String value = ds.getValue(String.class);
 
+                        calorie_sum = calorie_sum + Double.parseDouble(value);
 
                         mUserFood.add("    " + name + "  " + value);
 

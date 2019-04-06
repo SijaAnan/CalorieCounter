@@ -76,6 +76,13 @@ public class MainActivity extends AppCompatActivity
         finish();
     }
 
+    private void send2food_act() {
+
+        Intent startIntent = new Intent(MainActivity.this , FoodActivity.class);
+        startActivity(startIntent);
+        finish();
+    }
+
     public void setActionBarTitle(String title){
 
         getSupportActionBar().setTitle(title);
@@ -116,9 +123,11 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
         else if(id == R.id.action_add_food){
-            android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            /*android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.flMain , new FoodFragment());
-            ft.commit();
+            ft.commit();*/
+
+            send2food_act();
         }
 
         return super.onOptionsItemSelected(item);
@@ -151,9 +160,11 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.main_nav_food) {
 
+            send2food_act();
+            /*
             android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.flMain , new FoodFragment());
-            ft.commit();
+            ft.commit();*/
 
         } else if (id == R.id.main_nav_extra) {
 

@@ -40,7 +40,7 @@
     <string name="profilefrag_edit_btn">Edit</string>
 
 
-    <string-array name="months" >
+    <string-array name="months">
         <item>January</item>
         <item>February</item>
         <item>March</item>
@@ -54,5 +54,6 @@
         <item>November</item>
         <item>December</item>
     </string-array>
+    <string name="title_activity_food">FoodActivity</string>
 
 </resources>
