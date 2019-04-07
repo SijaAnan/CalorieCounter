@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity
 
         Intent startIntent = new Intent(MainActivity.this , FoodActivity.class);
         startActivity(startIntent);
-        finish();
+        //finish();
     }
 
     public void setActionBarTitle(String title){

@@ -12,9 +12,12 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,6 +57,14 @@ public class FoodActivity extends AppCompatActivity implements View.OnClickListe
     private EditText search_edit_text, caloriesAmount, addFood;
     private AlertDialog dialog;
 
+    //from home frag
+    private DatabaseReference mCurrUserFoodRef;
+
+    private ListView mFoodList;
+
+    private ArrayList<String> mUserFood = new ArrayList<>();
+    private ArrayAdapter<String> home_arrayAdapter;
+
 
 
     @Override
@@ -65,12 +76,161 @@ public class FoodActivity extends AppCompatActivity implements View.OnClickListe
         databaseReference = FirebaseDatabase.getInstance().getReference();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-
+        //design fields
+        mFoodList = (ListView) findViewById(R.id.homefragment_list);
 
         initFabMenu();
 
+        home_arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mUserFood);
+        mFoodList.setAdapter(home_arrayAdapter);
+
+
+        get_food();
+
+        mFoodList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                if (!mUserFood.get(position).toString().equals("Breakfast") && !mUserFood.get(position).toString().equals("Lunch") && !mUserFood.get(position).toString().equals("Dinner") ) {
+                    Toast.makeText(FoodActivity.this, "Long press for edit or delete. ", Toast.LENGTH_LONG).show();
+
+                }
+            }
+        });
+
+
     }
 
+    private void get_food() {
+
+        FirebaseUser current_user = FirebaseAuth.getInstance().getCurrentUser();
+        //final String current_uid = current_user.getUid();
+
+
+
+        //mUserFood.clear();
+
+        if (current_user != null) {
+
+            //String current_uid = current_user.getUid();
+            String current_uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+            Calendar c = Calendar.getInstance();
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            String formattedDate = df.format(c.getTime());
+
+            databaseReference = FirebaseDatabase.getInstance().getReference();
+            databaseReference = databaseReference.child("users").child(current_uid);
+            databaseReference = databaseReference.child("food").child(formattedDate);
+
+            //reference to the realtime database. pointing to our root.
+            mDataBase = FirebaseDatabase.getInstance().getReference();
+
+            //mDataBase = mDataBase.child("users");//.child(current_uid);
+            mCurrUserFoodRef = mDataBase.child("users").child(current_uid).child("food");
+
+            ValueEventListener breakfast_eventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    mUserFood.add("Breakfast");
+                    //List <String> list = new ArrayList<>();
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        String name = ds.getKey().toString();
+                        String value = ds.getValue(String.class);
+
+                        mUserFood.add("    " + name + "  " + value);
+
+                    }
+
+                    home_arrayAdapter.notifyDataSetChanged();
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            };
+            databaseReference.child("Breakfast").addListenerForSingleValueEvent(breakfast_eventListener);
+
+            ValueEventListener lunch_eventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    mUserFood.add("Lunch");
+                    //List <String> list = new ArrayList<>();
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        String name = ds.getKey().toString();
+                        String value = ds.getValue(String.class);
+
+                        mUserFood.add("    " + name + "  " + value);
+
+                    }
+
+                    home_arrayAdapter.notifyDataSetChanged();
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            };
+            databaseReference.child("Lunch").addListenerForSingleValueEvent(lunch_eventListener);
+
+            ValueEventListener dinner_eventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    mUserFood.add("Dinner");
+                    //List <String> list = new ArrayList<>();
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        String name = ds.getKey().toString();
+                        String value = ds.getValue(String.class);
+
+                        mUserFood.add("    " + name + "  " + value);
+
+                    }
+
+                    home_arrayAdapter.notifyDataSetChanged();
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            };
+            databaseReference.child("Dinner").addListenerForSingleValueEvent(dinner_eventListener);
+
+         /*   ValueEventListener snacks_eventListner = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    mUserFood.add("Snacks");
+                    //List <String> list = new ArrayList<>();
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        String name = ds.getKey().toString();
+                        String value = ds.getValue(String.class);
+
+                        mUserFood.add("    " + name + "  " + value);
+
+                    }
+
+                    home_arrayAdapter.notifyDataSetChanged();
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            };
+            databaseReference.child("Snacks").addListenerForSingleValueEvent(snacks_eventListner);*/
+        }
+        //mFoodList.setAdapter(home_arrayAdapter);
+    }
 
     private void initFabMenu()
     {
@@ -120,9 +280,6 @@ public class FoodActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
-
-
     private void handleFab(final String s)
     {
 
@@ -167,8 +324,6 @@ public class FoodActivity extends AppCompatActivity implements View.OnClickListe
                     search_edit_text.setHint("");
                     caloriesAmount.setHint("");
                     addFood.setHint("Add food to database");
-
-
 
                 }
                 else
@@ -218,6 +373,7 @@ public class FoodActivity extends AppCompatActivity implements View.OnClickListe
 
 
                 dialog.cancel();
+                finish();
 
 
 

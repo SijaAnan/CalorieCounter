@@ -27,7 +27,8 @@
             android:parentActivityName=".StartActivity" />
         <activity
             android:name=".FoodActivity"
-            android:label="@string/title_activity_food"></activity>
+            android:label="@string/title_activity_food"
+            android:parentActivityName=".MainActivity"></activity>
     </application>
 
 </manifest>

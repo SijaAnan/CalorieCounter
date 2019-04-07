@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -70,7 +71,6 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         return home_view;
     }
-
 
     private void get_food() {
 
