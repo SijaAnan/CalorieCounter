@@ -30,6 +30,9 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //finish();
+        //startActivity(getIntent());
+
         //initialize the FirebaseAuth instance.
         mAuth = FirebaseAuth.getInstance();
 
@@ -51,7 +54,6 @@ public class MainActivity extends AppCompatActivity
         ft.replace(R.id.flMain, new HomeFragment());
         ft.commit();
 
-
         navigationView.setCheckedItem(R.id.main_nav_home);
     }
 
@@ -61,6 +63,14 @@ public class MainActivity extends AppCompatActivity
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(R.id.main_nav_home);
+
+        android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.flMain, new HomeFragment());
+        ft.commit();
 
         if(currentUser == null){
 
@@ -128,6 +138,7 @@ public class MainActivity extends AppCompatActivity
             ft.commit();*/
 
             send2food_act();
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -161,6 +172,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.main_nav_food) {
 
             send2food_act();
+
             /*
             android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.flMain , new FoodFragment());

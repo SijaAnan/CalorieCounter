@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-
-
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="0dp"
         android:layout_height="470dp"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -39,49 +37,81 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
         android:ems="10"
-        android:hint="Enter calories amount"
-        android:theme="@style/EditTextTheme"
+        android:hint="weight in grams"
         android:inputType="number"
-        app:layout_constraintTop_toTopOf="@+id/recyclerView"
-        tools:layout_editor_absoluteX="0dp" />
+        android:theme="@style/EditTextTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/recyclerView" />
+
+    <Button
+        android:id="@+id/addmelas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="28dp"
+        android:text="@string/foodact_addmeals"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/caloriesAmount" />
 
     <Button
         android:id="@+id/ok_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
         android:layout_marginEnd="50dp"
-        android:text="Ok"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="28dp"
+        android:text="Finish"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.929"
+        app:layout_constraintStart_toEndOf="@+id/addmelas"
         app:layout_constraintTop_toBottomOf="@+id/caloriesAmount" />
 
     <EditText
         android:id="@+id/addFoodEdit"
         android:layout_width="180dp"
         android:layout_height="46dp"
-        android:layout_marginTop="100dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginTop="96dp"
         android:ems="10"
+        android:hint="Food's type"
         android:inputType="textPersonName"
-        android:hint="Add food to database"
         android:theme="@style/EditTextTheme"
         app:layout_constraintEnd_toEndOf="@+id/recyclerView"
-        app:layout_constraintHorizontal_bias="0.516"
+        app:layout_constraintHorizontal_bias="0.081"
         app:layout_constraintStart_toStartOf="@+id/recyclerView"
+        app:layout_constraintTop_toBottomOf="@+id/ok_button" />
+
+    <EditText
+        android:id="@+id/addFoodCal"
+        android:layout_width="119dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="96dp"
+        android:ems="10"
+        android:hint="calories in 100gr "
+        android:inputType="number"
+        android:theme="@style/EditTextTheme"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.448"
+        app:layout_constraintStart_toEndOf="@+id/addFoodEdit"
         app:layout_constraintTop_toBottomOf="@+id/ok_button" />
 
     <Button
         android:id="@+id/addFoodButton"
         android:layout_width="wrap_content"
         android:layout_height="39dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="60dp"
         android:text="ADD"
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.464"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addFoodEdit" />
 
@@ -90,14 +120,13 @@
         android:id="@+id/checkBox"
         android:layout_width="136dp"
         android:layout_height="36dp"
-        android:layout_marginTop="36dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginTop="36dp"
         android:text="Enable adding food"
         app:layout_constraintEnd_toEndOf="@+id/recyclerView"
         app:layout_constraintHorizontal_bias="0.126"
         app:layout_constraintStart_toStartOf="@+id/recyclerView"
         app:layout_constraintTop_toBottomOf="@+id/ok_button" />
-
 
 
 </android.support.constraint.ConstraintLayout>

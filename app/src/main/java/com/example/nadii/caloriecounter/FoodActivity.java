@@ -1,6 +1,7 @@
 package com.example.nadii.caloriecounter;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -52,9 +53,9 @@ public class FoodActivity extends AppCompatActivity implements View.OnClickListe
     private SearchAdapter searchAdapter;
     private FirebaseUser  firebaseUser;
     private DatabaseReference databaseReference;
-    private Button OkButton, foodButton;
+    private Button OkButton, foodButton, addmeals_anan_btn;
     private CheckBox checkBox;
-    private EditText search_edit_text, caloriesAmount, addFood;
+    private EditText search_edit_text, caloriesAmount, addFood, addFoodCal;
     private AlertDialog dialog;
 
     //from home frag
@@ -76,8 +77,12 @@ public class FoodActivity extends AppCompatActivity implements View.OnClickListe
         databaseReference = FirebaseDatabase.getInstance().getReference();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
+        //Toolbar set
+        getSupportActionBar().setTitle("Day Managment");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         //design fields
-        mFoodList = (ListView) findViewById(R.id.homefragment_list);
+        mFoodList = (ListView) findViewById(R.id.foodact_list);
 
         initFabMenu();
 
@@ -86,19 +91,32 @@ public class FoodActivity extends AppCompatActivity implements View.OnClickListe
 
 
         get_food();
+        //set_list();
 
         mFoodList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 if (!mUserFood.get(position).toString().equals("Breakfast") && !mUserFood.get(position).toString().equals("Lunch") && !mUserFood.get(position).toString().equals("Dinner") ) {
-                    Toast.makeText(FoodActivity.this, "Long press for edit or delete. ", Toast.LENGTH_LONG).show();
-
+                    //Toast.makeText(FoodActivity.this, "Long press for edit or delete. ", Toast.LENGTH_LONG).show();
+                    return;
                 }
+
+                Intent startIntent = new Intent(FoodActivity.this , MealsActivity.class);
+                startIntent.putExtra("meal",mUserFood.get(position).toString());
+                startActivity(startIntent);
+                finish();
             }
         });
 
 
+    }
+
+    private void set_list() {
+
+        mUserFood.add("Breakfast");
+        mUserFood.add("Lunch");
+        mUserFood.add("Dinner");
     }
 
     private void get_food() {
@@ -279,7 +297,14 @@ public class FoodActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    private void handeEditDelete(){
 
+        final AlertDialog.Builder mBuilder = new AlertDialog.Builder(FoodActivity.this);
+
+        View ed_view = getLayoutInflater().inflate(R.layout.search_food, null);
+
+
+    }
     private void handleFab(final String s)
     {
 
@@ -290,7 +315,8 @@ public class FoodActivity extends AppCompatActivity implements View.OnClickListe
 
         View mView = getLayoutInflater().inflate(R.layout.search_food, null);
 
-
+        addmeals_anan_btn = (Button) mView.findViewById(R.id.addmelas);
+        addFoodCal = (EditText) mView.findViewById(R.id.addFoodCal);
 
         search_edit_text = (EditText) mView.findViewById(R.id.search_edit_text);
         recyclerView = (RecyclerView) mView.findViewById(R.id.recyclerView);
@@ -306,6 +332,7 @@ public class FoodActivity extends AppCompatActivity implements View.OnClickListe
 
 
         addFood.setEnabled(false);
+        addFoodCal.setEnabled(false);
         foodButton.setEnabled(false);
 
 
@@ -318,12 +345,15 @@ public class FoodActivity extends AppCompatActivity implements View.OnClickListe
                     search_edit_text.setEnabled(false);
                     caloriesAmount.setEnabled(false);
                     addFood.setEnabled(true);
-                    OkButton.setEnabled(false);
+                    addFoodCal.setEnabled(true);
+                    //OkButton.setEnabled(false);
                     foodButton.setEnabled(true);
+
+                    addmeals_anan_btn.setEnabled(false);
 
                     search_edit_text.setHint("");
                     caloriesAmount.setHint("");
-                    addFood.setHint("Add food to database");
+                    addFood.setHint("Add food's name to database");
 
                 }
                 else
@@ -332,13 +362,17 @@ public class FoodActivity extends AppCompatActivity implements View.OnClickListe
                     search_edit_text.setEnabled(true);
                     caloriesAmount.setEnabled(true);
                     addFood.setEnabled(false);
+                    addFoodCal.setEnabled(false);
                     OkButton.setEnabled(true);
                     foodButton.setEnabled(false);
 
+                    addmeals_anan_btn.setEnabled(true);
+
 
                     search_edit_text.setHint("Search for what you've eaten...");
-                    caloriesAmount.setHint("Enter calories amount");
+                    caloriesAmount.setHint("weight in grams");
                     addFood.setHint("");
+                    addFoodCal.setHint("");
 
                 }
 
@@ -352,6 +386,7 @@ public class FoodActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View view) {
 
+                /*
                 //HashMap<String , String> userMeal = new HashMap<>();
                 String myFood, myCalories;
 
@@ -370,16 +405,63 @@ public class FoodActivity extends AppCompatActivity implements View.OnClickListe
                 //userMeal.put( myFood, myCalories);
                 databaseReference.setValue(myCalories);
                 //databaseReference.child("Breakfast").setValue(userMeal);
-
+				*/
 
                 dialog.cancel();
+
+                //Intent startIntent = new Intent(FoodActivity.this , MainActivity.class);
+                //startActivity(startIntent);
                 finish();
+
 
 
 
             }
         });
 
+        addmeals_anan_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //HashMap<String , String> userMeal = new HashMap<>();
+                String myFood, myCalories;
+
+                myFood = search_edit_text.getText().toString();
+                myCalories = caloriesAmount.getText().toString();
+                Calendar c = Calendar.getInstance();
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                String formattedDate = df.format(c.getTime());
+
+                if(!myFood.isEmpty()) {
+
+                    if(!myCalories.isEmpty()) {
+
+                        FirebaseUser current_user = FirebaseAuth.getInstance().getCurrentUser();
+                        String current_uid = current_user.getUid();
+                        databaseReference = FirebaseDatabase.getInstance().getReference();
+                        databaseReference = databaseReference.child("users").child(current_uid);
+                        databaseReference = databaseReference.child("food").child(formattedDate).child(s).child(myFood);
+
+                        //userMeal.put( myFood, myCalories);
+                        databaseReference.setValue(myCalories);
+                        //databaseReference.child("Breakfast").setValue(userMeal);
+                        Toast.makeText(FoodActivity.this, myFood + "added to your diary. ", Toast.LENGTH_LONG).show();
+
+                        caloriesAmount.getText().clear();
+                        search_edit_text.getText().clear();
+                    }
+                    else {
+
+                        Toast.makeText(FoodActivity.this, "Can't be added - Weight in grams is Empty.", Toast.LENGTH_LONG).show();
+                    }
+                }
+                else{
+
+                    Toast.makeText(FoodActivity.this, "Can't be added - What you've eaten is Empty.", Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
 
         foodButton = (Button)mView.findViewById(R.id.addFoodButton);
 
@@ -391,17 +473,31 @@ public class FoodActivity extends AppCompatActivity implements View.OnClickListe
                 String addedFood;
                 addedFood = addFood.getText().toString();
 
-                if(addedFood != "")
+                String AddedFoodCal = addFoodCal.getText().toString();
+
+                if(!addedFood.isEmpty())
                 {
 
-                    databaseReference = FirebaseDatabase.getInstance().getReference();
-                    databaseReference = databaseReference.child("food");
-                    databaseReference.child(addedFood).setValue("");
+                    if(!AddedFoodCal.isEmpty()) {
 
-                    Toast.makeText(getApplicationContext(),"Added " + addFood.getText() + " to database", Toast.LENGTH_SHORT).show();
+                        databaseReference = FirebaseDatabase.getInstance().getReference();
+                        databaseReference = databaseReference.child("food");
+                        databaseReference.child(addedFood).setValue(AddedFoodCal);
 
-                    addFood.getText().clear();
+                        Toast.makeText(getApplicationContext(), "Added " + addFood.getText() + " to database", Toast.LENGTH_SHORT).show();
 
+                        addFood.getText().clear();
+                        addFoodCal.getText().clear();
+                    }
+                    else {
+
+                        Toast.makeText(getApplicationContext(),"Can't be added - Food's Calories is Empty", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+                else {
+
+                    Toast.makeText(getApplicationContext(),"Can't be added - Food's name is Empty", Toast.LENGTH_SHORT).show();
                 }
 
 

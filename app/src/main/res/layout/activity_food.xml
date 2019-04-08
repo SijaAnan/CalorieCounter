@@ -13,20 +13,20 @@
 
 
     <TextView
-        android:id="@+id/homefrag_txt_view"
+        android:id="@+id/foodact_txt_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TEXT"
-        android:textSize="30sp"
-        android:layout_alignParentTop="true"/>
+        android:layout_alignParentTop="true"
+        android:text="@string/foodact_txt"
+        android:textSize="16sp" />
 
     <ListView
-        android:id="@+id/homefragment_list"
+        android:id="@+id/foodact_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/homefrag_txt_view">
+        android:layout_below="@id/foodact_txt_view"
+        android:layout_centerHorizontal="true">
 
     </ListView>
 
@@ -91,5 +91,8 @@
         android:clickable="true"
         app:elevation="4dp"
         />
+
+
+
 
 </RelativeLayout>
