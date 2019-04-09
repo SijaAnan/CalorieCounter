@@ -1,5 +1,6 @@
 package com.example.nadii.caloriecounter;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -30,9 +31,12 @@ import java.util.Calendar;
 
 public class MealsActivity extends AppCompatActivity {
 
-    private TextView mTitletxt;
-    private Button mDonebtn;
+    private TextView mTitletxt, mEditFoodTxt;
+    private Button mDonebtn, mEditFoodBtn;
+    private EditText mEditFoodEditTxt;
     private ListView mFoodList;
+
+    private AlertDialog dialog;
 
     private ArrayList<String> mUserFood = new ArrayList<>();
     private ArrayList<String> mUserFood2edelete = new ArrayList<>();
@@ -122,6 +126,12 @@ public class MealsActivity extends AppCompatActivity {
                                 mFoodList.getChildAt(position).setBackgroundColor(Color.RED);
 
                             }
+                            else if(item.getTitle().equals("edit")){
+
+                                Toast.makeText(MealsActivity.this, "" + mUserFood2edelete.get(position).toString(), Toast.LENGTH_LONG).show();
+                                handleEditFood(position);
+                                mFoodList.getChildAt(position).setBackgroundColor(Color.GRAY);
+                            }
 
                             return true;
                         }
@@ -132,6 +142,66 @@ public class MealsActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void handleEditFood(final int position ){
+
+        final AlertDialog.Builder mBuilder = new AlertDialog.Builder(MealsActivity.this);
+
+        View edit_view = getLayoutInflater().inflate(R.layout.edit_food, null);
+
+        mEditFoodTxt = (TextView) edit_view.findViewById(R.id.editfood_textView);
+        mEditFoodEditTxt = (EditText) edit_view.findViewById(R.id.editfood_editText);
+        mEditFoodBtn = (Button) edit_view.findViewById(R.id.editfood_btn);
+
+        String myFood;
+        myFood = mUserFood2edelete.get(position).toString();
+
+        mEditFoodTxt.setText(myFood);
+
+
+        mEditFoodBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //HashMap<String , String> userMeal = new HashMap<>();
+
+                String  myCalories;
+
+                //Toast.makeText(MealsActivity.this, " " + myFood, Toast.LENGTH_LONG).show();
+                myCalories = mEditFoodEditTxt.getText().toString();
+
+                String current_uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+                Calendar c = Calendar.getInstance();
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                String formattedDate = df.format(c.getTime());
+
+
+                if(!myCalories.isEmpty()) {
+
+                    databaseReference = FirebaseDatabase.getInstance().getReference();
+                    databaseReference = databaseReference.child("users").child(current_uid);
+                    databaseReference = databaseReference.child("food").child(formattedDate).child(meal);
+
+
+                    databaseReference.child(mUserFood2edelete.get(position).toString()).setValue(myCalories);
+
+                    //mEditFoodEditTxt.getText().clear();
+                    //search_edit_text.getText().clear();
+                }
+                else {
+
+                    Toast.makeText(MealsActivity.this, "Can't be added - Weight in grams is Empty.", Toast.LENGTH_LONG).show();
+                }
+
+                dialog.cancel();
+            }
+        });
+
+        mBuilder.setView(edit_view);
+        dialog = mBuilder.create();
+        dialog.show();
     }
 
     private void get_food() {
@@ -154,7 +224,7 @@ public class MealsActivity extends AppCompatActivity {
             databaseReference = databaseReference.child("users").child(current_uid);
             databaseReference = databaseReference.child("food").child(formattedDate);
 
-            ValueEventListener breakfast_eventListener = new ValueEventListener() {
+            ValueEventListener eventListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -181,7 +251,7 @@ public class MealsActivity extends AppCompatActivity {
                 }
 
             };
-            databaseReference.child(meal).addListenerForSingleValueEvent(breakfast_eventListener);
+            databaseReference.child(meal).addListenerForSingleValueEvent(eventListener);
         }
     }
 

@@ -163,11 +163,10 @@ public class MainActivity extends AppCompatActivity
             ft.replace(R.id.flMain , new ProfileFragment());
             ft.commit();
 
-        } else if (id == R.id.main_nav_categories) {
+        } else if (id == R.id.main_nav_database) {
 
-            android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.flMain , new CategoriesFragment());
-            ft.commit();
+            Intent startIntent = new Intent(MainActivity.this , FoodDataBaseActivity.class);
+            startActivity(startIntent);
 
         } else if (id == R.id.main_nav_food) {
 

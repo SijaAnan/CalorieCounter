@@ -32,7 +32,11 @@
         <activity
             android:name=".MealsActivity"
             android:label="@string/title_activity_meals"
-            android:parentActivityName=".FoodActivity"></activity>
+            android:parentActivityName=".FoodActivity" />
+        <activity
+            android:name=".FoodDataBaseActivity"
+            android:label="@string/title_activity_food_data_base"
+            android:parentActivityName=".MainActivity"></activity>
     </application>
 
 </manifest>

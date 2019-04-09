@@ -13,13 +13,13 @@
             android:icon="@drawable/ic_menu_person"
             android:title="Profile" />
         <item
-            android:id="@+id/main_nav_categories"
-            android:icon="@drawable/ic_menu_categories"
-            android:title="Categories" />
-        <item
             android:id="@+id/main_nav_food"
             android:icon="@drawable/ic_menu_food"
             android:title="Food" />
+        <item
+            android:id="@+id/main_nav_database"
+            android:icon="@drawable/database"
+            android:title="Food DataBase" />
         <item
             android:id="@+id/main_nav_extra"
             android:title="Future Use" />

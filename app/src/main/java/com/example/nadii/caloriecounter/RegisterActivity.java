@@ -170,6 +170,19 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }*/
 
+    //TODO - complete this method.
+    private void grab_user_data(){
+
+        FirebaseUser current_user = FirebaseAuth.getInstance().getCurrentUser();
+        String current_uid = current_user.getUid();
+
+        mDataBase = FirebaseDatabase.getInstance().getReference();
+
+        mDataBase = mDataBase.child("users").child(current_uid);
+
+        //mName.setText(mDataBase.child("name").);
+
+    }
     private void set_profile() {
 
 

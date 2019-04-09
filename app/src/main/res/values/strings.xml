@@ -58,5 +58,6 @@
     <string name="foodact_txt">press for editing or deleting.</string>
     <string name="foodact_addmeals">ADD</string>
     <string name="title_activity_meals">MealsActivity</string>
+    <string name="title_activity_food_data_base">FoodDataBaseActivity</string>
 
 </resources>
