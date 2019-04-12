@@ -44,7 +44,7 @@ import java.util.HashMap;
 
 import static java.security.AccessController.getContext;
 
-public class FoodDataBaseActivity extends AppCompatActivity implements View.OnClickListener, SearchAdapter.SearchListener {
+public class FoodDataBaseActivity extends AppCompatActivity implements View.OnClickListener, Database_SearchAdapter.SearchListener {
 
     //create firebase instase.
     private FirebaseAuth mAuth;
@@ -59,7 +59,7 @@ public class FoodDataBaseActivity extends AppCompatActivity implements View.OnCl
     DatabaseReference databaseReference;
     FirebaseUser firebaseUser;
     ArrayList<String> fullNameList;
-    SearchAdapter searchAdapter;
+    Database_SearchAdapter searchAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,7 +175,7 @@ public class FoodDataBaseActivity extends AppCompatActivity implements View.OnCl
                         break;
                 }
 
-                searchAdapter = new SearchAdapter(FoodDataBaseActivity.this, fullNameList, FoodDataBaseActivity.this);
+                searchAdapter = new Database_SearchAdapter(FoodDataBaseActivity.this, fullNameList, FoodDataBaseActivity.this);
                 recyclerView.setAdapter(searchAdapter);
             }
 
@@ -195,5 +195,11 @@ public class FoodDataBaseActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void onItemSelect(String text) {
 
+    }
+
+    public void search_init(){
+        search_edit_text.getText().clear();
+        fullNameList.clear();
+        recyclerView.removeAllViews();
     }
 }
