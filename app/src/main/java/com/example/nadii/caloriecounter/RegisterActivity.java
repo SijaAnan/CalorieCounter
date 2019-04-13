@@ -119,7 +119,6 @@ public class RegisterActivity extends AppCompatActivity {
         year_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         year_spinner.setAdapter(year_adapter);
 
-        //sends the spinners items selected to the database
         spinners_item_select();
 
         mVerifyBtn.setOnClickListener(new View.OnClickListener() {
@@ -138,7 +137,7 @@ public class RegisterActivity extends AppCompatActivity {
                 // It MainActivity - editing profile.
                     //Toast.makeText(RegisterActivity.this , "FUCKINGG ENTEREED. ", Toast.LENGTH_LONG).show();
                     //grab_user_data();
-                    set_profile();
+                    update_profile();
                     Intent main_intent = new Intent(RegisterActivity.this , MainActivity.class);
                     startActivity(main_intent);
                     finish();
@@ -258,32 +257,49 @@ public class RegisterActivity extends AppCompatActivity {
         radioBgender = findViewById(radioId);
         userMap.put("gender" , radioBgender.getText().toString());
 
+        //sends the spinners items selected to the database
+        //spinners_item_select();
 
         //userMap.put("birth date" , "dd/mm/yyyy");
 
         mDataBase.setValue(userMap);
 
-        mDataBase = mDataBase.child("food");
+    }
 
-        HashMap<String , String> userBreakfast = new HashMap<>();
-        userBreakfast.put("egg" , "63");
-        mDataBase.child("breakfast").setValue(userBreakfast);
+    private void update_profile() {
 
-        HashMap<String , String> userLunch = new HashMap<>();
-        userLunch.put("burger" , "540");
-        mDataBase.child("lunch").setValue(userLunch);
 
-        HashMap<String , String> userDinner = new HashMap<>();
-        userDinner.put("spaghetti" , "340");
-        mDataBase.child("dinner").setValue(userDinner);
+        FirebaseUser current_user = FirebaseAuth.getInstance().getCurrentUser();
+        String current_uid = current_user.getUid();
 
-        HashMap<String , String> userSnacks = new HashMap<>();
-        userSnacks.put("apple" , "40");
-        mDataBase.child("snacks").setValue(userSnacks);
+        if(current_user != null) {
+
+            //String current_uid = current_user.getUid();
+        }
+
+        //reference to the realtime database. pointing to our root.
+        mDataBase = FirebaseDatabase.getInstance().getReference();
+
+        mDataBase = mDataBase.child("users").child(current_uid);
+
+        //HashMap<String , String> userMap = new HashMap<>();
+
+        mDataBase.child("name").setValue(null);
+        mDataBase.child("name").setValue(mName.getText().toString());
+        mDataBase.child("weight").setValue(null);
+        mDataBase.child("weight").setValue(mWeight.getText().toString());
+        mDataBase.child("height").setValue(null);
+        mDataBase.child("height").setValue(mHeight.getText().toString());
+
+
+        int radioId = radioGgender.getCheckedRadioButtonId();
+        radioBgender = findViewById(radioId);
+
+        mDataBase.child("gender").setValue(null);
+        mDataBase.child("gender").setValue(radioBgender.getText().toString());
 
 
     }
-
 
     public void spinners_item_select(){
 
@@ -330,4 +346,6 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }

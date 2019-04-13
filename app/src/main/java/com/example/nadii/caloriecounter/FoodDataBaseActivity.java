@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
@@ -53,6 +54,8 @@ public class FoodDataBaseActivity extends AppCompatActivity implements View.OnCl
 
     private Button mVerifyBtn;
     private EditText mName;
+
+    private AlertDialog dialog;
 
     EditText   search_edit_text;
     RecyclerView recyclerView;
@@ -185,6 +188,93 @@ public class FoodDataBaseActivity extends AppCompatActivity implements View.OnCl
 
             }
         });
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.fooddatabase_menu, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if(id == R.id.add_food_database){
+            /*android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.flMain , new FoodFragment());
+            ft.commit();*/
+
+            handleAddFood();
+
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    private void handleAddFood(){
+
+        final AlertDialog.Builder mBuilder = new AlertDialog.Builder(FoodDataBaseActivity.this);
+
+        View edit_view = getLayoutInflater().inflate(R.layout.edit_database, null);
+
+        final EditText mEditFoodEditTxt,mEditFoodCalEditTxt;
+        final Button mEditFoodBtn;
+
+        mEditFoodEditTxt = (EditText) edit_view.findViewById(R.id.editdatabase_food_name);
+        mEditFoodCalEditTxt = (EditText) edit_view.findViewById(R.id.editdatabase_food_cal);
+        mEditFoodBtn = (Button) edit_view.findViewById(R.id.editdatabase_btn);
+
+
+
+
+
+        mEditFoodBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //HashMap<String , String> userMeal = new HashMap<>();
+
+                String  myCalories,myFood;
+
+                //Toast.makeText(MealsActivity.this, " " + myFood, Toast.LENGTH_LONG).show();
+                myFood = mEditFoodEditTxt.getText().toString();
+                myCalories = mEditFoodCalEditTxt.getText().toString();
+
+                String current_uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+                Calendar c = Calendar.getInstance();
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                String formattedDate = df.format(c.getTime());
+
+
+                if(!myCalories.isEmpty()) {
+
+                    databaseReference = FirebaseDatabase.getInstance().getReference();
+                    databaseReference = databaseReference.child("food");
+                    databaseReference.child(myFood).setValue(myCalories);
+
+                }
+                else {
+
+                    Toast.makeText(FoodDataBaseActivity.this, "Can't be added - Weight in grams is Empty.", Toast.LENGTH_LONG).show();
+                }
+
+                dialog.cancel();
+            }
+        });
+
+        mBuilder.setView(edit_view);
+        dialog = mBuilder.create();
+        dialog.show();
     }
 
     @Override

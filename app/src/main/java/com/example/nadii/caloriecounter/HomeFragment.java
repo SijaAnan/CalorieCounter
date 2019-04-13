@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,10 +41,11 @@ public class HomeFragment extends Fragment {
     private ListView mFoodList;
 
     private ArrayList<String> mUserFood = new ArrayList<>();
+    private ArrayList<Double> mUserFoodCal = new ArrayList<>();
     private ArrayAdapter<String> home_arrayAdapter;
 
     private TextView mSumCalorie;
-    private double calorie_sum = 0;
+    private Double calorie_sum = new Double(0);
 
     public HomeFragment() {
         // Required empty public constructor
@@ -71,7 +73,7 @@ public class HomeFragment extends Fragment {
 
         get_food();
 
-        mSumCalorie.setText("You've Eat Today : " + Double.toString(calorie_sum));
+        //mSumCalorie.setText("You've Ate Today : " + calorie_sum);
         // Inflate the layout for this fragment
         return home_view;
     }
@@ -82,9 +84,7 @@ public class HomeFragment extends Fragment {
         FirebaseUser current_user = FirebaseAuth.getInstance().getCurrentUser();
         //final String current_uid = current_user.getUid();
 
-
-
-        //mUserFood.clear();
+        mUserFood.clear();
 
         if (current_user != null) {
 
@@ -109,17 +109,22 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
-                    mUserFood.add("Breakfast");
-                    //List <String> list = new ArrayList<>();
-                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                        String name = ds.getKey().toString();
-                        String value = ds.getValue(String.class);
+                    for (DataSnapshot dsc : dataSnapshot.getChildren()) {
 
-                        mUserFood.add("    " + name + "  " + value);
+                        mUserFood.add(dsc.getKey().toString());
+                        for (DataSnapshot ds : dsc.getChildren()) {
 
-                        calorie_sum = calorie_sum + Double.parseDouble(value);
+
+                            String name = ds.getKey().toString();
+                            String value = ds.getValue(String.class);
+
+                            mUserFood.add("    " + name + "  " + value);
+
+                            calorie_sum = calorie_sum + Double.parseDouble(value);
+                        }
                     }
 
+                    mSumCalorie.setText("You've Ate Today : " + calorie_sum.toString() + " cal");
                     home_arrayAdapter.notifyDataSetChanged();
 
                 }
@@ -129,9 +134,10 @@ public class HomeFragment extends Fragment {
 
                 }
             };
-            mCurrUserFoodRef.child("Breakfast").addListenerForSingleValueEvent(breakfast_eventListener);
+            mCurrUserFoodRef.addListenerForSingleValueEvent(breakfast_eventListener);
+            //mCurrUserFoodRef.child("Breakfast").addListenerForSingleValueEvent(breakfast_eventListener);
 
-            ValueEventListener lunch_eventListener = new ValueEventListener() {
+            /*ValueEventListener lunch_eventListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -142,6 +148,7 @@ public class HomeFragment extends Fragment {
                         String value = ds.getValue(String.class);
 
                         mUserFood.add("    " + name + "  " + value);
+
                         calorie_sum = calorie_sum + Double.parseDouble(value);
                     }
 
@@ -154,9 +161,9 @@ public class HomeFragment extends Fragment {
 
                 }
             };
-            mCurrUserFoodRef.child("Lunch").addListenerForSingleValueEvent(lunch_eventListener);
+            mCurrUserFoodRef.child("Lunch").addListenerForSingleValueEvent(lunch_eventListener);*/
 
-            ValueEventListener dinner_eventListener = new ValueEventListener() {
+            /*ValueEventListener dinner_eventListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -167,10 +174,12 @@ public class HomeFragment extends Fragment {
                         String value = ds.getValue(String.class);
 
                         mUserFood.add("    " + name + "  " + value);
-                        calorie_sum = calorie_sum + Double.parseDouble(value);
 
+                        calorie_sum = calorie_sum + Double.parseDouble(value);
+                        Log.d("calorie sum" , calorie_sum.toString());
                     }
 
+                    mSumCalorie.setText("You've Ate Today : " + calorie_sum.toString());
                     home_arrayAdapter.notifyDataSetChanged();
 
                 }
@@ -180,7 +189,8 @@ public class HomeFragment extends Fragment {
 
                 }
             };
-            mCurrUserFoodRef.child("Dinner").addListenerForSingleValueEvent(dinner_eventListener);
+            mCurrUserFoodRef.child("Dinner").addListenerForSingleValueEvent(dinner_eventListener);*/
+
 
          /*   ValueEventListener snacks_eventListner = new ValueEventListener() {
                 @Override
@@ -207,6 +217,7 @@ public class HomeFragment extends Fragment {
             };
             databaseReference.child("Snacks").addListenerForSingleValueEvent(snacks_eventListner);*/
         }
+
         //mFoodList.setAdapter(home_arrayAdapter);
     }
     /*private void get_food() {

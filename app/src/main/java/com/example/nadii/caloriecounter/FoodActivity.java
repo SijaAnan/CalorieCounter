@@ -424,7 +424,7 @@ public class FoodActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(View v) {
 
                 //HashMap<String , String> userMeal = new HashMap<>();
-                String myFood, myCalories;
+                final String myFood, myCalories;
 
                 myFood = search_edit_text.getText().toString();
                 myCalories = caloriesAmount.getText().toString();
@@ -442,8 +442,46 @@ public class FoodActivity extends AppCompatActivity implements View.OnClickListe
                         databaseReference = databaseReference.child("users").child(current_uid);
                         databaseReference = databaseReference.child("food").child(formattedDate).child(s).child(myFood);
 
+                        mCurrUserFoodRef = FirebaseDatabase.getInstance().getReference();
+                        mCurrUserFoodRef = mCurrUserFoodRef.child("food");
+
+                        ValueEventListener eventListener = new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+
+                                    String name = ds.getKey().toString();
+                                    String value = ds.getValue(String.class);
+
+                                    if(name.equals(myFood)){
+
+                                        Double caloris = Double.parseDouble(myCalories);
+                                        Double value_gram = Double.parseDouble(value);
+                                        Double result = (caloris*value_gram/100);
+
+                                        databaseReference.setValue(result.toString());
+
+                                        //myCalories = result.toString();
+                                    }
+
+
+                                }
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        };
+                        mCurrUserFoodRef.addListenerForSingleValueEvent(eventListener);
+
                         //userMeal.put( myFood, myCalories);
-                        databaseReference.setValue(myCalories);
+
+
+
+                        //databaseReference.setValue(myCalories);
                         //databaseReference.child("Breakfast").setValue(userMeal);
                         Toast.makeText(FoodActivity.this, myFood + "added to your diary. ", Toast.LENGTH_LONG).show();
 

@@ -96,7 +96,7 @@ public class ProfileFragment extends Fragment {
                 Intent reg_intent = new Intent(getActivity() , RegisterActivity.class);
                 reg_intent.putExtra("flag", "Edit");
                 startActivity(reg_intent);
-                //getActivity().finish();
+                getActivity().finish();
 
             }
 

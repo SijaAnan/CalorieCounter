@@ -36,7 +36,11 @@
         <activity
             android:name=".FoodDataBaseActivity"
             android:label="@string/title_activity_food_data_base"
-            android:parentActivityName=".MainActivity"></activity>
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".HistoryActivity"
+            android:parentActivityName=".MainActivity"/>
+        <activity android:name=".EditPrevDaysActivity"
+            android:parentActivityName=".HistoryActivity"></activity>
     </application>
 
 </manifest>

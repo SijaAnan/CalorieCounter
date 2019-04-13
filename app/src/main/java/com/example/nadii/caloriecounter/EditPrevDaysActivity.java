@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,7 +30,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class MealsActivity extends AppCompatActivity {
+public class EditPrevDaysActivity extends AppCompatActivity {
+
 
     private TextView mTitletxt, mEditFoodTxt;
     private Button mDonebtn, mEditFoodBtn;
@@ -46,7 +48,8 @@ public class MealsActivity extends AppCompatActivity {
     private DatabaseReference databaseReference,mCurrUserFoodRef;
     private FirebaseUser firebaseUser;
 
-    private String meal;
+    private String date,meal;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +61,8 @@ public class MealsActivity extends AppCompatActivity {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         //Toolbar set
-        getSupportActionBar().setTitle("Meals Edit");
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Day Edit");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //design fields
         mTitletxt = findViewById(R.id.meals_headtxt);
@@ -67,9 +70,12 @@ public class MealsActivity extends AppCompatActivity {
         mFoodList = findViewById(R.id.meals_list);
 
         Intent intent = getIntent();
-        meal= intent.getStringExtra("meal");
+        date = intent.getStringExtra("date");
+        meal = intent.getStringExtra("meal");
 
-        mTitletxt.setText(meal);
+        Log.d("MEAL : ", meal);
+
+        mTitletxt.setText(date);
 
         home_arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mUserFood);
         mFoodList.setAdapter(home_arrayAdapter);
@@ -80,9 +86,9 @@ public class MealsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent startIntent = new Intent(MealsActivity.this , FoodActivity.class);
+                //Intent startIntent = new Intent(MealsActivity.this , FoodActivity.class);
                 //startIntent.putExtra("meal",mUserFood.get(position).toString());
-                startActivity(startIntent);
+                //startActivity(startIntent);
                 finish();
             }
         });
@@ -95,7 +101,7 @@ public class MealsActivity extends AppCompatActivity {
                 if (!mUserFood.get(position).toString().equals("Breakfast") && !mUserFood.get(position).toString().equals("Lunch") && !mUserFood.get(position).toString().equals("Dinner") ) {
                     //Toast.makeText(FoodActivity.this, "Long press for edit or delete. ", Toast.LENGTH_LONG).show();
 
-                    PopupMenu popupMenu = new PopupMenu(MealsActivity.this , mFoodList.getChildAt(position));
+                    PopupMenu popupMenu = new PopupMenu(EditPrevDaysActivity.this , mFoodList.getChildAt(position));
                     popupMenu.getMenuInflater().inflate(R.menu.food_popup_menu,popupMenu.getMenu());
 
                     popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -108,19 +114,14 @@ public class MealsActivity extends AppCompatActivity {
 
                                 String current_uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-                                Calendar c = Calendar.getInstance();
-                                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-                                String formattedDate = df.format(c.getTime());
-
                                 databaseReference = FirebaseDatabase.getInstance().getReference();
                                 databaseReference = databaseReference.child("users").child(current_uid);
-                                databaseReference = databaseReference.child("food").child(formattedDate).child(meal);
-
+                                databaseReference = databaseReference.child("food").child(date).child(meal);
 
                                 databaseReference.child(mUserFood2edelete.get(position).toString()).setValue(null);
 
                                 //databaseReference.removeValue();
-                                Toast.makeText(MealsActivity.this, "" + mUserFood.get(position).toString(), Toast.LENGTH_LONG).show();
+                                Toast.makeText(EditPrevDaysActivity.this, "" + mUserFood.get(position).toString(), Toast.LENGTH_LONG).show();
                                 //mUserFood.remove(position);
                                 //mUserFood2edelete.remove(position);
                                 mFoodList.getChildAt(position).setBackgroundColor(Color.RED);
@@ -128,7 +129,7 @@ public class MealsActivity extends AppCompatActivity {
                             }
                             else if(item.getTitle().equals("edit")){
 
-                                Toast.makeText(MealsActivity.this, "" + mUserFood2edelete.get(position).toString(), Toast.LENGTH_LONG).show();
+                                Toast.makeText(EditPrevDaysActivity.this, "" + mUserFood2edelete.get(position).toString(), Toast.LENGTH_LONG).show();
                                 handleEditFood(position);
                                 mFoodList.getChildAt(position).setBackgroundColor(Color.GRAY);
                             }
@@ -146,7 +147,7 @@ public class MealsActivity extends AppCompatActivity {
 
     private void handleEditFood(final int position ){
 
-        final AlertDialog.Builder mBuilder = new AlertDialog.Builder(MealsActivity.this);
+        final AlertDialog.Builder mBuilder = new AlertDialog.Builder(EditPrevDaysActivity.this);
 
         View edit_view = getLayoutInflater().inflate(R.layout.edit_food, null);
 
@@ -173,16 +174,12 @@ public class MealsActivity extends AppCompatActivity {
 
                 String current_uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-                Calendar c = Calendar.getInstance();
-                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-                String formattedDate = df.format(c.getTime());
-
 
                 if(!myCalories.isEmpty()) {
 
                     databaseReference = FirebaseDatabase.getInstance().getReference();
                     databaseReference = databaseReference.child("users").child(current_uid);
-                    databaseReference = databaseReference.child("food").child(formattedDate).child(meal);
+                    databaseReference = databaseReference.child("food").child(date).child(meal);
 
 
                     mCurrUserFoodRef = FirebaseDatabase.getInstance().getReference();
@@ -227,7 +224,7 @@ public class MealsActivity extends AppCompatActivity {
                 }
                 else {
 
-                    Toast.makeText(MealsActivity.this, "Can't be added - Weight in grams is Empty.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(EditPrevDaysActivity.this, "Can't be added - Weight in grams is Empty.", Toast.LENGTH_LONG).show();
                 }
 
                 dialog.cancel();
@@ -251,30 +248,38 @@ public class MealsActivity extends AppCompatActivity {
             //String current_uid = current_user.getUid();
             String current_uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-            Calendar c = Calendar.getInstance();
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-            String formattedDate = df.format(c.getTime());
-
             databaseReference = FirebaseDatabase.getInstance().getReference();
             databaseReference = databaseReference.child("users").child(current_uid);
-            databaseReference = databaseReference.child("food").child(formattedDate);
+            databaseReference = databaseReference.child("food").child(date);
+
+            Log.d("DATE : " , date);
+            Log.d("DATE : " , databaseReference.getRef().toString());
 
             ValueEventListener eventListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
-                    //mUserFood.add(meal);
-                    //mUserFood2edelete.add(meal);
+                   /* for (DataSnapshot dsc : dataSnapshot.getChildren()) {
 
-                    //List <String> list = new ArrayList<>();
+                        mUserFood.add(dsc.getKey().toString());
+
+                        Log.d("DATE : " , dsc.getKey().toString());*/
+
                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                        String name = ds.getKey().toString();
+
+                        Log.d("DATE : " , dataSnapshot.getRef().toString());
+
+                        String name = ds.getKey();
                         String value = ds.getValue(String.class);
+
+                        Log.d("DATE : " , name);
 
                         mUserFood.add("    " + name + "  " + value);
                         mUserFood2edelete.add(name);
 
+
                     }
+                    //}
 
                     home_arrayAdapter.notifyDataSetChanged();
 
@@ -284,10 +289,10 @@ public class MealsActivity extends AppCompatActivity {
                 public void onCancelled(DatabaseError databaseError) {
 
                 }
-
             };
             databaseReference.child(meal).addListenerForSingleValueEvent(eventListener);
         }
     }
+
 
 }

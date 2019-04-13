@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"       >
+
+
+    <item
+        android:id="@+id/add_food_database"
+        android:icon="@drawable/ic_4"
+        android:title="add_food_database"
+        app:showAsAction="always" />
+
+</menu>

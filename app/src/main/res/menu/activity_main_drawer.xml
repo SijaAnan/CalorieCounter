@@ -15,14 +15,15 @@
         <item
             android:id="@+id/main_nav_food"
             android:icon="@drawable/ic_menu_food"
-            android:title="Food" />
+            android:title="Today" />
         <item
             android:id="@+id/main_nav_database"
             android:icon="@drawable/database"
             android:title="Food DataBase" />
         <item
             android:id="@+id/main_nav_extra"
-            android:title="Future Use" />
+            android:title="Day's History"
+            android:icon="@drawable/calendar_icon"/>
     </group>
 
 
