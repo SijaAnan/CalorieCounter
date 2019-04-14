@@ -10,8 +10,8 @@
     <string name="start_welcome_txt">Welcome to SijaAnan CalorieCounter App</string>
     <string name="start_signup_btn">Create an account</string>
     <string name="start_signin_btn">Sign in</string>
-    <string name="reg_title_txt">Please insert your details, and verify your email before logging in</string>
-    <string name="reg_signup_btn">Set profile details , Send verification mail</string>
+    <string name="reg_title_txt">Please set your details...</string>
+    <string name="reg_signup_btn">Set profile details</string>
     <string name="main_action_logout">Log out</string>
     <string name="start_email_txt">Enter Your Email ...</string>
     <string name="start_password_txt">Enter Your Password ...</string>

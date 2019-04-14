@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -53,6 +54,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     HashMap<String , String> userMap = new HashMap<>();
 
+    private String tmp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,11 +79,14 @@ public class RegisterActivity extends AppCompatActivity {
 
         if(checkFlag.equals("FirstTime")){
 
+            spinners_item_select();
+
         }
         else{
             // It MainActivity - editing profile.
             //Toast.makeText(RegisterActivity.this , "FUCKINGG ENTEREED. ", Toast.LENGTH_LONG).show();
             grab_user_data();
+            //spinners_item_select_update();
 
         }
 
@@ -119,7 +124,8 @@ public class RegisterActivity extends AppCompatActivity {
         year_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         year_spinner.setAdapter(year_adapter);
 
-        spinners_item_select();
+        //spinners_item_select();
+
 
         mVerifyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,6 +135,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 if(checkFlag.equals("FirstTime")){
                     //if we came here from start activity - registration process.
+
                     set_profile();
                     FirebaseAuth.getInstance().signOut();
                     finish();
@@ -137,9 +144,10 @@ public class RegisterActivity extends AppCompatActivity {
                 // It MainActivity - editing profile.
                     //Toast.makeText(RegisterActivity.this , "FUCKINGG ENTEREED. ", Toast.LENGTH_LONG).show();
                     //grab_user_data();
+
                     update_profile();
-                    Intent main_intent = new Intent(RegisterActivity.this , MainActivity.class);
-                    startActivity(main_intent);
+                    //Intent main_intent = new Intent(RegisterActivity.this , MainActivity.class);
+                    //startActivity(main_intent);
                     finish();
 
                 }
@@ -237,37 +245,41 @@ public class RegisterActivity extends AppCompatActivity {
         FirebaseUser current_user = FirebaseAuth.getInstance().getCurrentUser();
         String current_uid = current_user.getUid();
 
-        if(current_user != null) {
 
-            //String current_uid = current_user.getUid();
+        if(radioGgender.getCheckedRadioButtonId() == -1 || mName.getText().toString().isEmpty() || mWeight.getText().toString().isEmpty() || mHeight.getText().toString().isEmpty()){
+
         }
+        else {
+            if (current_user != null) {
 
-        //reference to the realtime database. pointing to our root.
-        mDataBase = FirebaseDatabase.getInstance().getReference();
+                //String current_uid = current_user.getUid();
+            }
 
-        mDataBase = mDataBase.child("users").child(current_uid);
+            //reference to the realtime database. pointing to our root.
+            mDataBase = FirebaseDatabase.getInstance().getReference();
 
-        //HashMap<String , String> userMap = new HashMap<>();
+            mDataBase = mDataBase.child("users").child(current_uid);
 
-        userMap.put("name", mName.getText().toString());
-        userMap.put("weight" , mWeight.getText().toString());
-        userMap.put("height" , mHeight.getText().toString());
+            //HashMap<String , String> userMap = new HashMap<>();
 
-        int radioId = radioGgender.getCheckedRadioButtonId();
-        radioBgender = findViewById(radioId);
-        userMap.put("gender" , radioBgender.getText().toString());
+            userMap.put("name", mName.getText().toString());
+            userMap.put("weight", mWeight.getText().toString());
+            userMap.put("height", mHeight.getText().toString());
 
-        //sends the spinners items selected to the database
-        //spinners_item_select();
+            int radioId = radioGgender.getCheckedRadioButtonId();
+            radioBgender = findViewById(radioId);
+            userMap.put("gender", radioBgender.getText().toString());
 
-        //userMap.put("birth date" , "dd/mm/yyyy");
+            //sends the spinners items selected to the database
+            //spinners_item_select();
 
-        mDataBase.setValue(userMap);
+            //userMap.put("birth date" , "dd/mm/yyyy");
 
+            mDataBase.setValue(userMap);
+        }
     }
 
     private void update_profile() {
-
 
         FirebaseUser current_user = FirebaseAuth.getInstance().getCurrentUser();
         String current_uid = current_user.getUid();
@@ -276,28 +288,34 @@ public class RegisterActivity extends AppCompatActivity {
 
             //String current_uid = current_user.getUid();
         }
+        if(radioGgender.getCheckedRadioButtonId() == -1 || mName.getText().toString().isEmpty() || mWeight.getText().toString().isEmpty() || mHeight.getText().toString().isEmpty()){
 
-        //reference to the realtime database. pointing to our root.
-        mDataBase = FirebaseDatabase.getInstance().getReference();
+        }
+        else {
+            //reference to the realtime database. pointing to our root.
+            mDataBase = FirebaseDatabase.getInstance().getReference();
 
-        mDataBase = mDataBase.child("users").child(current_uid);
+            mDataBase = mDataBase.child("users").child(current_uid);
 
-        //HashMap<String , String> userMap = new HashMap<>();
+            //HashMap<String , String> userMap = new HashMap<>();
 
-        mDataBase.child("name").setValue(null);
-        mDataBase.child("name").setValue(mName.getText().toString());
-        mDataBase.child("weight").setValue(null);
-        mDataBase.child("weight").setValue(mWeight.getText().toString());
-        mDataBase.child("height").setValue(null);
-        mDataBase.child("height").setValue(mHeight.getText().toString());
+            mDataBase.child("name").setValue(null);
+            mDataBase.child("name").setValue(mName.getText().toString());
+            mDataBase.child("weight").setValue(null);
+            mDataBase.child("weight").setValue(mWeight.getText().toString());
+            mDataBase.child("height").setValue(null);
+            mDataBase.child("height").setValue(mHeight.getText().toString());
 
 
-        int radioId = radioGgender.getCheckedRadioButtonId();
-        radioBgender = findViewById(radioId);
+            int radioId = radioGgender.getCheckedRadioButtonId();
+            radioBgender = findViewById(radioId);
 
-        mDataBase.child("gender").setValue(null);
-        mDataBase.child("gender").setValue(radioBgender.getText().toString());
+            mDataBase.child("gender").setValue(null);
+            mDataBase.child("gender").setValue(radioBgender.getText().toString());
 
+            //mDataBase.child("birth date").setValue(null);
+            //mDataBase.child("birth date").setValue(userMap);
+        }
 
     }
 
@@ -345,6 +363,67 @@ public class RegisterActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void spinners_item_select_update(){
+
+        FirebaseUser current_user = FirebaseAuth.getInstance().getCurrentUser();
+        String current_uid = current_user.getUid();
+
+        mDataBase = FirebaseDatabase.getInstance().getReference();
+
+        mDataBase = mDataBase.child("users").child(current_uid);
+
+        final String[] text = new String[1];
+
+        day_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                text[0] = parent.getItemAtPosition(position).toString();
+                //userMap.put("birth date" , text[0]);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        month_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                text[0] = text[0] + parent.getItemAtPosition(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        year_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                text[0] = text[0] + parent.getItemAtPosition(position).toString();
+
+                userMap.put("birth date update" , text[0]);
+
+                //mDataBase.child("birth date").setValue(null);
+                //mDataBase.child("birth date").setValue(text[0]);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+//        Log.d("TEXT " , tmp);
+
     }
 
 

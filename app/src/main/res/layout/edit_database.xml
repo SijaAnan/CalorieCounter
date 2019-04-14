@@ -33,6 +33,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editdatabase_food_name" />
 
     <Button
+        android:background="@drawable/buttonstyleselector"
         android:id="@+id/editdatabase_btn"
         android:layout_width="wrap_content"
         android:layout_height="39dp"

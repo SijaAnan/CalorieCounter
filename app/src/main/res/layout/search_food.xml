@@ -46,6 +46,7 @@
         app:layout_constraintTop_toTopOf="@+id/recyclerView" />
 
     <Button
+        android:background="@drawable/buttonstyleselector"
         android:id="@+id/addmelas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -56,6 +57,7 @@
         app:layout_constraintTop_toBottomOf="@+id/caloriesAmount" />
 
     <Button
+        android:background="@drawable/buttonstyleselector"
         android:id="@+id/ok_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -101,6 +103,7 @@
         app:layout_constraintTop_toBottomOf="@+id/ok_button" />
 
     <Button
+        android:background="@drawable/buttonstyleselector"
         android:id="@+id/addFoodButton"
         android:layout_width="wrap_content"
         android:layout_height="39dp"

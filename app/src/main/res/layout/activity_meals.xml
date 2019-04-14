@@ -31,6 +31,7 @@
     </ListView>
 
     <Button
+        android:background="@drawable/buttonstyleselector"
         android:id="@+id/meals_btn"
         android:layout_width="368dp"
         android:layout_height="wrap_content"

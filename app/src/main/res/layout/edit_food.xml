@@ -31,6 +31,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
+        android:background="@drawable/buttonstyleselector"
         android:id="@+id/editfood_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

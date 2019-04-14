@@ -4,8 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#cad6ae"
-    tools:context=".StartActivity">
+    android:background="@color/start_background"
+    tools:context=".StartActivity"
+
+    >
 
     <Button
         android:id="@+id/start_signup_button"
@@ -15,9 +17,9 @@
         android:layout_marginBottom="8dp"
         android:layout_marginStart="64dp"
         android:layout_marginTop="8dp"
-        android:background="@color/start_signup_btn"
+        android:background="@drawable/buttonstyleselector"
         android:text="@string/start_signup_btn"
-        android:textColor="?attr/colorButtonNormal"
+        android:textColor="#ffff"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,6 +49,8 @@
         app:layout_constraintVertical_bias="0.744" />
 
     <EditText
+
+
         android:id="@+id/start_email_txt"
         android:layout_width="395dp"
         android:layout_height="wrap_content"
@@ -54,6 +58,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="80dp"
         android:ems="10"
+
         android:hint="@string/start_email_txt"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
@@ -62,11 +67,13 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <EditText
+
         android:id="@+id/start_password_txt"
         android:layout_width="395dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
         android:ems="10"
+
         android:hint="@string/start_password_txt"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"

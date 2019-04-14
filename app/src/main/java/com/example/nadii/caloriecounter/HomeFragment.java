@@ -124,7 +124,7 @@ public class HomeFragment extends Fragment {
                         }
                     }
 
-                    mSumCalorie.setText("You've Ate Today : " + calorie_sum.toString() + " cal");
+                    mSumCalorie.setText("You have eaten today: " + calorie_sum.toString() + " calories");
                     home_arrayAdapter.notifyDataSetChanged();
 
                 }

@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity
 
             send2start_act();
         }
+
     }
 
     //function that sends us to the start activity.

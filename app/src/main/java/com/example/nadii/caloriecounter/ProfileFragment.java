@@ -2,6 +2,7 @@ package com.example.nadii.caloriecounter;
 
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -96,7 +97,7 @@ public class ProfileFragment extends Fragment {
                 Intent reg_intent = new Intent(getActivity() , RegisterActivity.class);
                 reg_intent.putExtra("flag", "Edit");
                 startActivity(reg_intent);
-                getActivity().finish();
+                //getActivity().finish();
 
             }
 
@@ -144,11 +145,11 @@ public class ProfileFragment extends Fragment {
                     String height = dataSnapshot.child("height").getValue(String.class);
                     String weight = dataSnapshot.child("weight").getValue(String.class);
 
-                    mUserData.add("name: " + name);
-                    mUserData.add("birth date: " + birthdate);
-                    mUserData.add("gender: " + gender);
-                    mUserData.add("height: " + height);
-                    mUserData.add("weight: " + weight);
+                    mUserData.add("Name: " + name);
+                    mUserData.add("Birthday: " + birthdate);
+                    mUserData.add("Gender: " + gender);
+                    mUserData.add("Height: " + height);
+                    mUserData.add("Weight : " + weight);
                     mUserData.add("BMI : " + calcualteBMI(height,weight));
 
                     arrayAdapter.notifyDataSetChanged();
@@ -161,7 +162,8 @@ public class ProfileFragment extends Fragment {
                 }
             };
             mCurrUserRef.addListenerForSingleValueEvent(eventListener);
-
+            //mUserList.setBackgroundColor(Color.parseColor("#b6d177"));
+            //mUserList.setBackgroundResource(R.drawable.logo);
             mUserList.setAdapter(arrayAdapter);
         }
 
@@ -181,40 +183,6 @@ public class ProfileFragment extends Fragment {
         double result = Math.round(weight/height);
 
 
-
-        // If or else for values
-        /*
-        if(result < 18.5){
-            TextViewResult.setText("Your BMI is " + result + "\nYou are categorized as underweight.");
-        }
-        else{
-            if(result < 24.9){
-                TextViewResult.setText("Your BMI is " + result + "\nYou are categorized as normal weight.");
-            }
-            else {
-                if (result < 29.9) {
-                    TextViewResult.setText("Your BMI is " + result + "\nYou are categorized as overweight.");
-                }
-                else{
-                    if(result > 30 && result < 34.9){
-                        TextViewResult.setText("Your BMI is " + result + "\nYou are categorized as obese class I (Moderately obese).");
-                    }
-                    else {
-                        if(result < 39.9){
-                            TextViewResult.setText("Your BMI is " + result + "\nYou are categorized as obese class II (Severely obese).");
-                        }
-                        else{
-                            if(result < 40){
-                                TextViewResult.setText("Your BMI is " + result + "\nYou are categorized as obese class III (Very severely obese).");
-                            }
-                            else{
-                                TextViewResult.setText("");
-                            }
-                        }
-                    }
-                }
-            }
-        }*/
 
         return result;
     }

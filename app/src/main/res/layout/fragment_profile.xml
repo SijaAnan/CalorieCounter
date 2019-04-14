@@ -15,11 +15,13 @@
             android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
             android:layout_weight="1"
+
             >
 
          </ListView>
 
         <Button
+            android:background="@drawable/buttonstyleselector"
             android:id="@+id/profilefrag_edit_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

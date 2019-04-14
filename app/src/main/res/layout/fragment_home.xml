@@ -16,7 +16,7 @@
             android:id="@+id/homefrag_txt_view"
             android:layout_width="match_parent"
             android:layout_height="58dp"
-            android:textSize="30sp" />
+            android:textSize="20sp" />
 
         <ListView
             android:id="@+id/homefragment_list"
